@@ -9,3 +9,9 @@ npm install
 ```
 starknet-devnet &
 ```
+Then : open Docker
+
+### Run Tests
+```
+npx hardhat test
+```
