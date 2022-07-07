@@ -69,3 +69,9 @@ func get_is_player{syscall_ptr : felt*, pedersen_ptr : HashBuiltin*, range_check
     let (res) = is_player.read(address)
     return (res=res)
 end
+
+@external 
+# Main des joueurs
+# River
+# Calculateur de mains
+# Update Balance

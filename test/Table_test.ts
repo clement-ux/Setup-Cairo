@@ -7,6 +7,7 @@ describe("My Test", function () {
     this.timeout(30_000);
 
     let contract: StarknetContract;
+    let deck: StarknetContract;
 
 
     let account0: Account;
@@ -20,11 +21,23 @@ describe("My Test", function () {
         account2 = await starknet.deployAccount("OpenZeppelin");
 
         // Contracts
-        const contractFactory = await starknet.getContractFactory("table");
+        let contractFactory = await starknet.getContractFactory("table");
         contract = await contractFactory.deploy();
 
+        contractFactory = await starknet.getContractFactory("deck");
+        deck = await contractFactory.deploy();
+
         console.log("Contract deployed at address: ",contract.address)
+        console.log("Contract deployed at address: ",deck.address)
+
+        await account0.invoke(deck, "init_deck")
     })
+
+    it("Should draw a card", async function () {
+        const res = await account0.call(deck, "draw", {id : 20})
+        console.log(res.card.color.toString())
+    })
+    /*
     it("Should do nothing", async function () {
         const amount = BigInt(10);
         const {res: ownerBefore } = await account0.call(contract, "get_owner")
@@ -45,7 +58,7 @@ describe("My Test", function () {
         //console.log(boole)
         //console.log(contract)
         //console.log(account0.publicKey)
-    })
+    })*/
 
     /*
     it("Should test", async function () {
