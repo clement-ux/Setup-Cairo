@@ -26,8 +26,19 @@ task("accounts", "Prints the list of accounts", async (taskArgs, hre) => {
 const config: HardhatUserConfig = {
   solidity: "0.8.4",
   starknet: {
-    //dockerizedVersion: "0.9.0-arm", 
-    network : "starknet_local"
+    network : "starknet_local",
+    wallets: {
+      MyWallet: {
+        accountName: "OpenZeppelin",
+        modulePath: "starkware.starknet.wallets.open_zeppelin.OpenZeppelinAccount",
+        accountPath: "~/.starknet_accounts"
+      },
+      AnotherWallet: {
+        accountName: "AnotherOpenZeppelin",
+        modulePath: "starkware.starknet.wallets.open_zeppelin.OpenZeppelinAccount",
+        accountPath: "~/.starknet_accounts"
+      }
+    }
   },
   networks: {
     starknet_local: {

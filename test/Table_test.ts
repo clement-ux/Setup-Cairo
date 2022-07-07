@@ -20,12 +20,34 @@ describe("My Test", function () {
         account2 = await starknet.deployAccount("OpenZeppelin");
 
         // Contracts
-        const contractFactory = await starknet.getContractFactory("contract");
+        const contractFactory = await starknet.getContractFactory("table");
         contract = await contractFactory.deploy();
 
         console.log("Contract deployed at address: ",contract.address)
     })
+    it("Should do nothing", async function () {
+        const amount = BigInt(10);
+        const {res: ownerBefore } = await account0.call(contract, "get_owner")
+        const { res: balanceBefore} = await account0.call(contract,"get_balance_player", {address :account1.publicKey})
 
+        await account1.invoke(contract, "caving", {amount, address :account1.publicKey})
+        const { res: boole} = await account1.call(contract,"get_is_player", {address :contract.address})
+        const { res: balanceAfter} = await account1.call(contract,"get_balance_player", {address :account1.publicKey})
+        const {res: ownerAfter } = await account0.call(contract, "get_owner")
+
+
+        const test = ownerAfter.toString(16)
+        console.log(test)
+        console.log(account0.publicKey)
+        console.log(account1.publicKey)
+        //console.log(balanceBefore)
+        //console.log(balanceAfter)
+        //console.log(boole)
+        //console.log(contract)
+        //console.log(account0.publicKey)
+    })
+
+    /*
     it("Should test", async function () {
         const amount = BigInt(10);
         const { res: currBalance } = await account0.call(contract, "get_balance");
@@ -49,5 +71,5 @@ describe("My Test", function () {
         const receipt = await starknet.getTransactionReceipt(txHash);
         console.log(receipt.events);
     });
+    */
 })
-0.000259500_000000000
