@@ -15,6 +15,7 @@ describe("My Test", function () {
     let account2: Account;
 
     before(async function () {
+        this.timeout(30000000)
         // Accounts
         account0 = await starknet.deployAccount("OpenZeppelin");
         account1 = await starknet.deployAccount("OpenZeppelin");
@@ -23,42 +24,39 @@ describe("My Test", function () {
         // Contracts
         let contractFactory = await starknet.getContractFactory("table");
         contract = await contractFactory.deploy();
-
-        contractFactory = await starknet.getContractFactory("deck");
-        deck = await contractFactory.deploy();
-
+        
         console.log("Contract deployed at address: ",contract.address)
-        console.log("Contract deployed at address: ",deck.address)
 
-        await account0.invoke(deck, "init_deck")
+        await account1.invoke(contract, "init_deck")
     })
 
+    /*
     it("Should draw a card", async function () {
         const res = await account0.call(deck, "draw", {id : 20})
         console.log(res.card.color.toString())
-    })
-    /*
+    })*/
+    
     it("Should do nothing", async function () {
         const amount = BigInt(10);
-        const {res: ownerBefore } = await account0.call(contract, "get_owner")
-        const { res: balanceBefore} = await account0.call(contract,"get_balance_player", {address :account1.publicKey})
+        const caller = await account1.call(contract,"sender")
 
-        await account1.invoke(contract, "caving", {amount, address :account1.publicKey})
-        const { res: boole} = await account1.call(contract,"get_is_player", {address :contract.address})
-        const { res: balanceAfter} = await account1.call(contract,"get_balance_player", {address :account1.publicKey})
-        const {res: ownerAfter } = await account0.call(contract, "get_owner")
+        await account1.invoke(contract, "caving", {amount})
+        const is_player = await account1.call(contract,"get_is_player", {address :account1.address})
+        const balance_player_after = await account1.call(contract,"get_balance_player", {address :account1.address})
 
+        console.log(caller)
+        console.log(balance_player_after)
+        console.log(is_player)
+    })
 
-        const test = ownerAfter.toString(16)
-        console.log(test)
-        console.log(account0.publicKey)
-        console.log(account1.publicKey)
-        //console.log(balanceBefore)
-        //console.log(balanceAfter)
-        //console.log(boole)
-        //console.log(contract)
-        //console.log(account0.publicKey)
-    })*/
+    it("User should draw", async function () {
+        const res = await account1.invoke(contract, "draw_hand", {id : 20})
+        //console.log(res)
+        const card = await account1.call(contract, "get_deck", {id:20})
+        console.log(card)
+        const hand = await account1.call(contract, "get_hand_player", {address : account1.address})
+        console.log(hand)
+    })
 
     /*
     it("Should test", async function () {
