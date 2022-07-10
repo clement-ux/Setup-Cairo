@@ -34,7 +34,14 @@ What has been done:
     things for this language, which is really new for us. 
 
 - This contract has not been deployed to the tesnet for some obvious reasons. 
-    So it is not linked to the front-end at the moment. 
+    So it is not linked to the front-end at the moment.
+
+- At the beginning we planned to use the library built by GeometryDAO, for the generation of the 
+    deck of the cards, the encryption of the cards, the reveale of the cards at the end and so on. 
+    After being in contact with the team, we first try the library (built in rust). 
+    The job done by GeometryDAO team is really amazing, but after some days of thinking of how we can 
+    integrate this in our game, we decide to not use it (for the moment). Because our goal was to 
+    built a 100% on-chain game, and their solution wasn't compatible with this (for the moment). 
 ## Link for front-end
 
 [Front-end Poker Stark](https://github.com/clement-ux/Poker-Stark)
